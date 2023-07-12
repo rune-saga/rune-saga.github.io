@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rowdies:wght@400;700&display=swap">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Condensed:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background-color: #171717;
+            margin: 0;
+            padding: 0;
+            font-family: 'Rowdies', sans-serif;
+            transition: background-image 0.3s ease;
+            overflow: hidden;
+            font-size: 30;
+        }
+
+        .background-image {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-size: cover;
+            background-image: url("https://i.imgur.com/Uj516dL.png");
+            transition: 0.3s ease;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        .background-image.show {
+            opacity: 1;
+        }
+
+        .background-image.milestone1 {
+            background-image: url("https://i.imgur.com/jfoUpiQ.jpg");
+        }
+
+        .roadmap-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin-top: calc(10px + (5vw));
+            position: relative;
+        }
+
+        .milestone-text {
+            position: absolute;
+            top: 30px; /* Adjusted position */
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 1.5vw;
+            color: white;
+            text-align: center;
+            width: 400px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .milestone-box {
+            position: absolute;
+            top: 60px; /* Adjusted position */
+            left: 50%;
+            transform: translateX(-50%);
+            width: 180px;
+            height: 60px;
+            background-color: rgba(0, 0, 0, 0.7);
+            border-radius: 4px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease; /* Added transition for transform */
+            pointer-events: none;
+            transform-origin: center center; /* Set transform origin */
+        }
+
+
+        .milestone-dot:hover .milestone-box {
+            opacity: 1;
+            transform: scale(1.2); /* Added scale transform on hover */
+        }
+
+        .roadmap {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 90%;
+            max-width: 1600px;
+        }
+
+        .roadmap-dot {
+            position: relative;
+            width: 20px;
+            height: 20px;
+            border-radius: 70%;
+            background-color: black;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4), 0 0 10px white;
+            outline: 5px solid white;
+            transition: transform 0.3s ease; /* Added transition for transform */
+            z-index: 2;
+        }
+
+        .roadmap-dot:hover {
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2), 0 0 50px rgba(255, 255, 255, 0.9);
+            transform: scale(1.2); /* Added scale transform on hover */
+        }
+
+        .roadmap-dot::before {
+            content: "";
+            position: absolute;
+            top: -10vw;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 9vw;
+            height: 9vw;
+            background-size: cover;
+            background-repeat: no-repeat;
+            border-radius: 50%;
+            box-shadow: 0 10px 10px rgba(0, 0, 0, 0.5), 0 0 50px rgba(255, 255, 255, 0.8);
+            transition: transform 0.3s ease; /* Added transition for transform */
+            outline: 4px solid rgba(255, 255, 255, 0.5);
+
+        }
+
+        .roadmap-dot:nth-child(1)::before {
+            background-image: url("https://i.imgur.com/EALc8ds.gif");
+        }
+
+        .roadmap-dot:nth-child(3)::before {
+            background-image: url("https://i.imgur.com/oET3UHX.gif");
+        }
+
+        .roadmap-dot:nth-child(5)::before {
+            background-image: url("https://i.imgur.com/RYA7iBQ.gif");
+        }
+
+        .roadmap-dot:nth-child(7)::before {
+            background-image: url("https://i.imgur.com/XX4QwCy.png");
+        }
+
+        .roadmap-dot:nth-child(9)::before {
+            background-image: url("https://i.imgur.com/lI5tkml.png");
+        }
+
+        .roadmap-line {
+            flex: 1;
+            height: 1px;
+            background-color: white;
+            position: relative;
+            z-index: 1;
+
+        }
+
+        .dynamic-text {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 400px;
+            height: 100px;
+            background-color: transparent;
+            color: #000;
+            font-size: 40px;
+            border-radius: 4px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .milestone-box-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 300px;
+            text-align: center;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+    #milestone-description {
+        position: absolute;
+        font-family: 'Roboto Condensed', sans-serif;
+	    top: 74%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 1.3vw;
+        color: white;
+        text-align: center;
+        width: 50%;
+        }
+
+        @media screen and (max-width: 1200px) {
+            .roadmap-dot::before {
+                top: -220px;
+                width: 200px;
+                height: 200px;
+            }
+
+        #milestone-description {
+        position: absolute;
+        left: 50%;
+	top: 70%;
+        transform: translateX(-50%);
+        font-size: 2vw;
+        color: white;
+        text-align: center;
+        width: 90%;
+        }   
+
+            .roadmap-container {
+                margin-top: calc(30px + (8vw));
+            }
+
+        }
+
+        @media screen and (max-width: 600px) {
+            .roadmap-dot::before {
+                top: -120px;
+                width: 100px;
+                height: 100px;
+            }
+
+            .roadmap-container {
+                margin-top: calc(20px + (6vw));
+            }
+        #milestone-description {
+        position: absolute;
+        top: 70%;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 3vw;
+        color: white;
+        text-align: center;
+        width: 90%;
+    }
+
+            }
+    .logo-container {
+        position: absolute;
+        top: 20%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 9999;
+        display: flex; /* Add this line */
+        justify-content: center; /* Add this line */
+        align-items: center;
+    }
+
+    .logo {
+        max-width: 50%;
+        max-height: 50vh;
+        width: auto;
+        height: auto;
+    }
+
+    @media screen and (max-width: 600px) {
+    .logo {
+        max-width: 100%;
+        max-height: 100%;
+        width: 100vw;
+        height: auto;
+    }
+        </style>
+   </head>
+    <body>
+
+        <div class="logo-container">
+    <img src="https://i.imgur.com/BujYMW6.png" alt="Logo" class="logo">
+</div>
+
+<div class="roadmap-container">
+    <div class="roadmap">
+        <div class="roadmap-dot">
+            <div class="milestone-box">
+                <span class="milestone-box-text">For the first month of the server, we were focused on bug fixes and QOL. Well, you need not wait much longer, our first proper content update is right around the corner! Hack, slash and slaughter your way through four new formidable bosses. Collect the body parts of the dark lord's disciples then offer them to him at his summoning circle and you just might get his attention! Beware though, this challenging battle is only for the most well-equipped adventurers!</span>
+            </div>
+            <span class="milestone-text">T80 Melee</span>
+        </div>
+
+        <div class="roadmap-line"></div>
+
+        <div class="roadmap-dot">
+            <div class="milestone-box">
+                <span class="milestone-box-text">To finish off the T80 trifecta, we'll be releasing the ranged boss not long after the melee content. The mighty Satyr, Finlas Thornbane, has reclaimed his land from the Spartans. 
+                    He showed no mercy to the invaders' army -- it was a bloodbath. The cowardly general, Leonix, barely managed to escape with his life. And now, in an attempt to rally support, the disgraced general comes to you. 
+                    Will you help him conquer the Guardian of the Forest? The reward might just be worth it... &nbsp; &nbsp; Do you think you'll have the courage to risk your HCIM status vs him?</span>
+            </div>
+            <span class="milestone-text">T80 Ranged</span>
+        </div>
+
+        <div class="roadmap-line"></div>
+
+        <div class="roadmap-dot">
+            <div class="milestone-box">
+                <span class="milestone-box-text">The invention expansion will introduce three new armor sets that build on Solrot. In the same way that Barrows pairs with zones 1-5 for Solrot, zones 6-8 will have their own minigame. 
+                    And, of course, each of the three new zones will introduce a challenging boss fight. Work alongside your group to take down zone bosses and progress together in our all new GIM mode! This update will bring a total of ten new bosses.</span>
+            </div>
+            <span class="milestone-text">Invention Expansion</span>
+        </div>
+
+        <div class="roadmap-line"></div>
+
+        <div class="roadmap-dot">
+            <div class="milestone-box">
+                <span class="milestone-box-text">You can expect us to go all out for our first raid. It will have somewhere in the ballpark of ten custom bosses, and even more custom maps. 
+                    The level of detail will be insane! While the focus will be on combat mechanics, there will likely be some light puzzling/skilling elements. 
+                    Oh, and grab some friends, because this will be our first true group content for all accounts!</span>
+            </div>
+            <span class="milestone-text">Raids 1</span>
+        </div>
+
+        <div class="roadmap-line"></div>
+
+        <div class="roadmap-dot">
+            <div class="milestone-box">
+                <span class="milestone-box-text">Venture into uncharted territory as we expand the skilling level cap from 99 to 120 and introduce a slew of new areas and content. We'll be working with the community to build the best skilling experience possible. We want the content to be engaging enough that it appeals to everyone, and not just the diehard skillers. Did someone say skilling bosses?</span>
+            </div>
+            <span class="milestone-text">Skilling Expansion</span>
+        </div>
+    </div>
+    <div class="dynamic-text">Milestone</div>
+</div>
+
+<div id="milestone-description"></div>
+
+<div class="background-image"></div>
+
+<script>
+        const dynamicText = document.querySelector('.dynamic-text');
+        const roadmapDots = document.querySelectorAll('.roadmap-dot');
+        const milestoneBoxes = document.querySelectorAll('.milestone-box');
+        const background = document.querySelector('.background-image');
+        const milestoneDescription = document.getElementById('milestone-description');
+        const defaultBackgroundImage = 'https://i.imgur.com/Uj516dL.png';
+        const milestoneBackgrounds = [
+            'https://i.imgur.com/OO1oWzd.jpg',
+            'https://i.imgur.com/l8Hxs7G.png',
+            'https://i.imgur.com/731u9yN.png',
+            'https://i.imgur.com/MmWUwD2.png',
+            'https://i.imgur.com/0g1o4w5.png'
+        ];
+
+        let currentMilestone = null;
+
+        function setMilestoneBackground(index) {
+            if (index === currentMilestone) return;
+
+            dynamicText.textContent = `Milestone ${index + 1}`;
+            dynamicText.classList.add('show');
+
+            if (currentMilestone !== null) {
+                roadmapDots[currentMilestone].classList.remove('active');
+            }
+
+            roadmapDots[index].classList.add('active');
+            background.style.opacity = '0';
+
+            setTimeout(() => {
+                background.style.backgroundImage = `url(${milestoneBackgrounds[index]})`;
+                background.style.opacity = '1';
+                currentMilestone = index;
+            }, 100);
+        }
+
+        roadmapDots.forEach((dot, index) => {
+            dot.addEventListener('mouseover', () => {
+                setMilestoneBackground(index);
+                milestoneDescription.textContent = milestoneBoxes[index].querySelector('.milestone-box-text').textContent;
+            });
+
+            dot.addEventListener('mouseout', () => {
+                dynamicText.classList.remove('show');
+                roadmapDots[currentMilestone].classList.remove('active');
+                milestoneDescription.textContent = '';
+            });
+        });
+
+        background.style.backgroundImage = `url(${defaultBackgroundImage})`;
+    </script>
+</body>
+</html>
